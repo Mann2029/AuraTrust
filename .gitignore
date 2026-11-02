@@ -46,3 +46,5 @@ storage/audit_logs/*
 # OS Artifacts
 .DS_Store
 Thumbs.db
+*.pdf
+*.pptx
