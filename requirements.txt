@@ -1,0 +1,53 @@
+# Python 3.9.13 | Native Windows | NVIDIA GPU | TensorFlow 2.10.1
+# IMPORTANT: TensorFlow 2.10.x is the last native-Windows GPU-supported TensorFlow line.
+# Keep NumPy below 1.24 for TensorFlow 2.10.x.
+
+# TensorFlow / Keras
+tensorflow==2.10.1
+keras==2.10.0
+numpy==1.23.5
+protobuf==3.19.6
+h5py==3.7.0
+tensorboard==2.10.1
+wrapt==1.14.1
+typing-extensions==4.6.1
+
+# Web Framework & Core Backend
+fastapi==0.103.2
+uvicorn[standard]==0.23.2
+pydantic==2.5.3
+pydantic-settings==2.1.0
+python-multipart==0.0.6
+
+# Database & Migrations (MySQL)
+sqlalchemy==2.0.23
+pymysql==1.1.0
+alembic==1.12.1
+greenlet==3.0.3
+
+# Security, Hashing & JWT Auth
+python-jose[cryptography]==3.3.0
+passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
+email-validator==2.1.0.post1
+
+# Real-Time WebSocket Support
+websockets==11.0.3
+
+# Computer Vision & Deep Learning Utilities
+opencv-python-headless==4.8.1.78
+mediapipe==0.10.11
+albumentations==1.3.1
+scikit-image==0.21.0
+scikit-learn==1.3.2
+scipy==1.9.3
+
+# LLM / XAI & Analytics
+requests==2.31.0
+
+# Testing
+pytest==7.4.4
+
+# Common TensorFlow plotting / data utilities
+matplotlib==3.7.5
+pandas==2.0.3

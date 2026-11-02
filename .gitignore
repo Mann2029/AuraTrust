@@ -1,0 +1,48 @@
+# Environment, Keys and Secrets
+.env
+*.env
+*.pem
+*.key
+kaggle.json
+
+# Python Artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.coverage
+htmlcov/
+*.egg-info/
+dist/
+build/
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+.vite/
+
+# Temporary / Scratch files
+temp_*
+*.tmp
+*.log
+
+# Storage & Live Captures (Ignore biometric faces & embeddings on disk)
+storage/
+storage/**
+storage/*
+storage/faces/*
+storage/embeddings/*
+storage/audit_logs/*
+*.npy
+*.jsonl
+
+# Ignore generated root images but KEEP report assets
+*.jpg
+*.jpeg
+*.png
+!docs/report_assets/*.png
+
+# OS Artifacts
+.DS_Store
+Thumbs.db

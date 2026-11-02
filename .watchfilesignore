@@ -1,0 +1,17 @@
+storage/
+storage/**
+storage/*
+storage/faces/*
+storage/embeddings/*
+storage/audit_logs/*
+*.jsonl
+*.npy
+*.jpg
+*.jpeg
+*.png
+temp_*
+__pycache__/
+*.pyc
+frontend/dist/
+frontend/node_modules/
+.pytest_cache/

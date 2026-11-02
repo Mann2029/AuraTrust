@@ -1,0 +1,440 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+:root {
+  color-scheme: dark;
+  --bg-canvas: #081633;
+  --surface-base: #111827;
+  --surface-raised: rgba(17, 25, 40, 0.45);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --brand-primary: #3b82f6;
+  --brand-ice: #60a5fa;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #081633;
+  color: #f8fafc;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Shared portal transition surface. Keeping this mounted during the exit
+   fade lets navigation finish without cutting off the shield animation. */
+.portal-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  background: rgba(10, 17, 40, 0.95);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.portal-transition-overlay.is-active {
+  opacity: 1;
+}
+
+.portal-transition-glow {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  border-radius: 9999px;
+  filter: blur(100px);
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+
+.portal-glow-blue { background: #2563eb; }
+.portal-glow-green { background: #10b981; }
+.portal-glow-red { background: #ef4444; }
+.portal-glow-black { background: #020617; }
+
+.portal-transition-shield-shell {
+  width: 13rem;
+  height: 13rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: center;
+  will-change: transform, opacity, filter;
+}
+
+.portal-transition-shield {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(96, 165, 250, 0.9))
+    drop-shadow(0 0 55px rgba(16, 185, 129, 0.55));
+}
+
+.portal-transition-ring {
+  position: absolute;
+  width: 8rem;
+  height: 8rem;
+  border: 1px solid rgba(147, 197, 253, 0.7);
+  border-radius: 9999px;
+  box-shadow: 0 0 28px rgba(59, 130, 246, 0.65), inset 0 0 28px rgba(16, 185, 129, 0.35);
+  opacity: 0;
+  transform: scale(0.1);
+}
+
+.portal-transition-ring.is-active {
+  animation: portalRingExpand 1250ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-fill-mode: both;
+}
+
+.portal-transition-ring-two {
+  border-color: rgba(52, 211, 153, 0.5);
+}
+
+.portal-transition-ring-two.is-active {
+  animation-delay: 100ms;
+}
+
+@keyframes portalRingExpand {
+  0% { opacity: 0; transform: scale(0.1); }
+  25% { opacity: 0.9; }
+  100% { opacity: 0; transform: scale(5.5); }
+}
+
+.portal-transition-overlay.is-active .portal-transition-shield {
+  opacity: 0.9;
+}
+
+/* Tabular numbers for dynamic telemetry and countdown timers */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 1. DARK BLUE TRANSPARENT GLASS (Glassmorphism Panel) */
+.glass-panel {
+  background: rgba(17, 25, 40, 0.45);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Glass Glare Effect */
+.glass-panel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--mouseX, 50%) var(--mouseY, 50%), rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  z-index: 10;
+}
+.glass-panel:hover::before { opacity: 1; }
+
+/* Homepage scroll reveals from the supplied Sentinel landing design. */
+.reveal-up,
+.reveal-scale {
+  opacity: 0;
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-up {
+  transform: translateY(30px);
+  transition-duration: 1000ms;
+}
+
+.reveal-scale {
+  transform: scale(0.92);
+  transition-duration: 1200ms;
+}
+
+.reveal-up.is-revealed,
+.reveal-scale.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.header-scrolled {
+  background: rgba(10, 15, 29, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Animated Text Shimmer */
+.animate-gradient-text {
+  background: linear-gradient(135deg, #60a5fa 0%, #34d399 50%, #60a5fa 100%);
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: textShine 5s linear infinite;
+}
+@keyframes textShine { to { background-position: 200% center; } }
+
+/* Floating Background Animations */
+.animate-float-slow { animation: float 8s ease-in-out infinite; }
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+
+/* Layered shield motion stays behind the interface while the scroll handler
+   adds the larger parallax movement. */
+.background-shield {
+  transform-origin: center;
+  will-change: transform;
+}
+
+.background-atmosphere {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 76% 20%, rgba(38, 112, 210, 0.18), transparent 32%),
+    radial-gradient(circle at 12% 70%, rgba(42, 84, 180, 0.16), transparent 34%),
+    linear-gradient(118deg, #081633 0%, #0d214c 52%, #0a1b41 100%);
+}
+
+.atmosphere-plane {
+  position: absolute;
+  display: block;
+  opacity: 0.38;
+  filter: blur(1px);
+  mix-blend-mode: screen;
+  transform-origin: center;
+}
+
+.atmosphere-plane-one {
+  width: 72vw;
+  height: 52vh;
+  left: -18vw;
+  top: -15vh;
+  background: linear-gradient(135deg, rgba(42, 92, 180, 0.18), rgba(17, 49, 112, 0.03));
+  clip-path: polygon(0 0, 72% 0, 100% 100%, 28% 78%);
+  animation: atmospherePlaneOne 22s ease-in-out infinite alternate;
+}
+
+.atmosphere-plane-two {
+  width: 84vw;
+  height: 56vh;
+  right: -24vw;
+  top: 8vh;
+  background: linear-gradient(135deg, rgba(37, 116, 190, 0.16), rgba(30, 47, 130, 0.04));
+  clip-path: polygon(28% 0, 100% 22%, 78% 100%, 0 72%);
+  animation: atmospherePlaneTwo 26s ease-in-out infinite alternate;
+}
+
+.atmosphere-plane-three {
+  width: 76vw;
+  height: 48vh;
+  left: 18vw;
+  bottom: -22vh;
+  background: linear-gradient(120deg, rgba(28, 68, 150, 0.22), rgba(16, 39, 93, 0.02));
+  clip-path: polygon(0 22%, 82% 0, 100% 78%, 18% 100%);
+  animation: atmospherePlaneThree 30s ease-in-out infinite alternate;
+}
+
+.atmosphere-orb {
+  position: absolute;
+  width: 28rem;
+  height: 28rem;
+  border-radius: 9999px;
+  filter: blur(70px);
+  opacity: 0.22;
+}
+
+.atmosphere-orb-blue {
+  right: 2%;
+  top: 14%;
+  background: #2563eb;
+  animation: atmosphereOrbBlue 18s ease-in-out infinite alternate;
+}
+
+.atmosphere-orb-cyan {
+  left: -10%;
+  bottom: 0;
+  background: #0891b2;
+  opacity: 0.14;
+  animation: atmosphereOrbCyan 21s ease-in-out infinite alternate;
+}
+
+@keyframes atmospherePlaneOne {
+  to { transform: translate3d(5vw, 3vh, 0) rotate(2deg); }
+}
+
+@keyframes atmospherePlaneTwo {
+  to { transform: translate3d(-4vw, 5vh, 0) rotate(-3deg); }
+}
+
+@keyframes atmospherePlaneThree {
+  to { transform: translate3d(2vw, -4vh, 0) rotate(2deg); }
+}
+
+@keyframes atmosphereOrbBlue {
+  to { transform: translate3d(-8vw, 5vh, 0) scale(1.18); opacity: 0.3; }
+}
+
+@keyframes atmosphereOrbCyan {
+  to { transform: translate3d(8vw, -5vh, 0) scale(1.12); opacity: 0.2; }
+}
+
+.background-shield-one {
+  animation: backgroundShieldDriftOne 14s ease-in-out infinite;
+}
+
+.background-shield-two {
+  animation: backgroundShieldDriftTwo 18s ease-in-out infinite;
+}
+
+.background-shield-transparent {
+  position: fixed;
+  width: 360px;
+  height: 360px;
+  object-fit: contain;
+  opacity: 0.08;
+  filter: blur(5px) saturate(0.8);
+  mix-blend-mode: screen;
+  animation: transparentShieldFloat 16s ease-in-out infinite;
+}
+
+.background-shield-transparent-left {
+  left: -8%;
+  top: 38%;
+}
+
+.background-shield-transparent-right {
+  right: -5%;
+  top: 4%;
+  width: 430px;
+  height: 430px;
+  opacity: 0.1;
+  animation-delay: -7s;
+}
+
+@keyframes transparentShieldFloat {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) rotate(-8deg) scale(0.96);
+    opacity: 0.06;
+  }
+  50% {
+    transform: translate3d(7vw, -5vh, 0) rotate(8deg) scale(1.08);
+    opacity: 0.13;
+  }
+}
+
+@keyframes backgroundShieldDriftOne {
+  0%, 100% { margin-top: 0; opacity: 0.15; }
+  50% { margin-top: -24px; opacity: 0.22; }
+}
+
+@keyframes backgroundShieldDriftTwo {
+  0%, 100% { margin-bottom: 0; opacity: 0.1; }
+  50% { margin-bottom: 30px; opacity: 0.16; }
+}
+
+/* Portal Transition Effects (The Shield Click) */
+@keyframes shieldPulse {
+  0%   { transform: scale(0.1); opacity: 0; filter: brightness(1); }
+  35%  { transform: scale(4.0); opacity: 1; filter: brightness(1.4); }
+  75%  { transform: scale(0.6); opacity: 1; filter: brightness(1); }
+  100% { transform: scale(0); opacity: 0; }
+}
+.animate-shield-pulse {
+  animation: shieldPulse 1.25s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+  animation-fill-mode: both;
+}
+
+@keyframes flashGlow {
+  0%   { transform: scale(0.1); opacity: 0; }
+  30%  { transform: scale(5); opacity: 0.85; }
+  60%  { transform: scale(1.5); opacity: 0; }
+  100% { transform: scale(0); opacity: 0; }
+}
+.animate-flash-glow {
+  animation: flashGlow 1.25s cubic-bezier(0.25, 1, 0.3, 1) forwards;
+  animation-fill-mode: both;
+}
+
+/* Subtle scannable table styles */
+.table-dense th {
+  padding: 0.625rem 0.875rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+  border-bottom: 1px solid rgba(226, 232, 240, 0.85);
+  background-color: #f8fafc;
+}
+
+.table-dense td {
+  padding: 0.625rem 0.875rem;
+  font-size: 0.75rem;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.9);
+}
+
+/* High-contrast focus rings */
+:focus-visible {
+  outline: 2px solid #2563eb;
+  outline-offset: 2px;
+}
+
+/* Clean scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Accessibility: Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Portal feedback is an essential navigation state, so keep its short
+     confirmation animation visible even when ambient motion is reduced. */
+  .portal-transition-overlay .animate-shield-pulse {
+    animation-duration: 1.25s !important;
+    animation-iteration-count: 1 !important;
+  }
+  .portal-transition-overlay .animate-flash-glow,
+  .portal-transition-overlay .portal-transition-ring.is-active {
+    animation-duration: 1.25s !important;
+    animation-iteration-count: 1 !important;
+  }
+}
