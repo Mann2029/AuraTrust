@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/images/logo.svg" alt="AuraTrust Sentinel Logo" width="220" />
+  <img src="logo.png" alt="AuraTrust Sentinel Logo" width="220" />
 </p>
 
 <h1 align="center">AURATRUST SENTINEL</h1>
